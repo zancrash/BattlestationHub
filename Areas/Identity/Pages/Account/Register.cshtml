@@ -14,7 +14,7 @@
             
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.Displayname" class="form-control" aria-required="true" placeholder="display name" />
+                <input asp-for="Input.Displayname" class="form-control" autocomplete="displayname" aria-required="true" placeholder="display name" />
                 <label asp-for="Input.Displayname">Display Name</label>
                 <span asp-validation-for="Input.Displayname" class="text-danger"></span>
             </div>
