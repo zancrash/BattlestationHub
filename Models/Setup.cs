@@ -6,6 +6,8 @@ namespace BattlestationHub.Models
     {
         public int Id { get; set; }
 
+        public string UserId {  get; set; } = string.Empty;
+
         public string SetupName { get; set; }
 
         public string SetupDesc { get; set; }

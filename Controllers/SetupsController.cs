@@ -10,6 +10,7 @@ using BattlestationHub.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Hosting;
+using System.Security.Claims;
 
 namespace BattlestationHub.Controllers
 {
@@ -62,6 +63,7 @@ namespace BattlestationHub.Controllers
         }
 
         // GET: Setups/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -72,10 +74,15 @@ namespace BattlestationHub.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create([Bind("Id,SetupName,SetupDesc,SetupImgFile")] Setup setup)
         {
             if (ModelState.IsValid)
             {
+                // Retrieve the current user's ID
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                setup.UserId = userId;
 
                 // Generate unique filename
                 string uniqueFileName = Guid.NewGuid().ToString() + "_" + DateTime.Now.ToString("yymmssfff") + "_" + setup.SetupImgFile.FileName;
