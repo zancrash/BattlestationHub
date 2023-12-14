@@ -6,9 +6,12 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using BattlestationHub.Data;
+using BattlestationHub.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace BattlestationHub.Areas.Identity.Pages.Account.Manage
 {
@@ -16,13 +19,17 @@ namespace BattlestationHub.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<Models.ApplicationUser> _userManager;
         private readonly SignInManager<Models.ApplicationUser> _signInManager;
+        private readonly ApplicationDbContext _context;
+
 
         public IndexModel(
             UserManager<Models.ApplicationUser> userManager,
-            SignInManager<Models.ApplicationUser> signInManager)
+            SignInManager<Models.ApplicationUser> signInManager,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
         /// <summary>
@@ -60,6 +67,9 @@ namespace BattlestationHub.Areas.Identity.Pages.Account.Manage
             public string PhoneNumber { get; set; }
         }
 
+        public List<Setup> UserSetups { get; set; }
+
+
         private async Task LoadAsync(Models.ApplicationUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
@@ -80,6 +90,9 @@ namespace BattlestationHub.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
+
+            // Fetch setups associated with the current user using the user's ID
+            UserSetups = await _context.Battlestation.Where(s => s.UserId == user.Id).ToListAsync();
 
             await LoadAsync(user);
             return Page();

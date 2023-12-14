@@ -11,12 +11,16 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Hosting;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace BattlestationHub.Controllers
 {
     public class SetupsController : Controller
     {
+
+
         private readonly ApplicationDbContext _context;
+
 
         private readonly IWebHostEnvironment _webHostEnvironment;
 
