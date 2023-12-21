@@ -9,6 +9,7 @@
     ViewData["Title"] = "Details";
 }
 
+
 <h1>@Html.DisplayFor(model => model.SetupName)</h1>
 
 <div>
@@ -42,6 +43,28 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+    <div>
+        @{
+            if (user?.Id == Model.UserId)
+            {
+                <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+            }
+            else
+            {
+                if ((bool)ViewData["IsSetupSaved"])
+                {
+                    <a asp-action="UnsaveSetup" asp-route-id="@Model.Id">Unsave</a>
+                }
+                else
+                {
+                    <a asp-action="SaveSetup" asp-route-id="@Model.Id">Save</a>
+                }
+            }
+        }
+
+        <a asp-action="Index">Back to List</a>
+
+     
+    </div>
 </div>

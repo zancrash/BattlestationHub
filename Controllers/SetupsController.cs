@@ -20,14 +20,15 @@ namespace BattlestationHub.Controllers
 
 
         private readonly ApplicationDbContext _context;
-
-
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public SetupsController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+
+        public SetupsController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _userManager = userManager;
         }
 
         // GET: Setups
@@ -57,11 +58,16 @@ namespace BattlestationHub.Controllers
             }
 
             var setup = await _context.Battlestation
+                .Include(s => s.Favourites)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (setup == null)
             {
                 return NotFound();
             }
+
+            var user = await _userManager.GetUserAsync(User);
+
+            ViewData["IsSetupSaved"] = setup.Favourites.Any(f => f.IsSaved(user.Id, setup.Id));
 
             return View(setup);
         }
@@ -120,6 +126,54 @@ namespace BattlestationHub.Controllers
                 return RedirectToAction(nameof(Index));
             }
              return View(setup);
+        }
+
+        public async Task<IActionResult> SaveSetup(int id)
+        {
+            var setup = await _context.Battlestation
+                    .Include(s => s.Favourites)
+                    .FirstOrDefaultAsync(s => s.Id == id);
+
+            if (setup == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+
+            // Check if the user has already favorited the setup
+            if (!setup.Favourites.Any(f => f.UserId == user.Id))
+            {
+                // Add the favorite
+                setup.Favourites.Add(new Favourite { UserId = user.Id });
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        public async Task<IActionResult> UnsaveSetup(int id)
+        {
+            var setup = await _context.Battlestation
+                    .Include(s => s.Favourites)
+                    .FirstOrDefaultAsync(s => s.Id == id);
+
+            if (setup == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+
+            // Remove the favorite
+            var favourite = setup.Favourites.FirstOrDefault(f => f.UserId == user.Id);
+            if (favourite != null)
+            {
+                setup.Favourites.Remove(favourite);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Details), new { id });
         }
 
         // GET: Setups/Edit/5

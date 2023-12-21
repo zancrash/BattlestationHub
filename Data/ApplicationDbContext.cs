@@ -11,5 +11,8 @@ namespace BattlestationHub.Data
         {
         }
         public DbSet<BattlestationHub.Models.Setup> Battlestation { get; set; } = default!;
+
+        public DbSet<Favourite> Favourites { get; set; }
+
     }
 }

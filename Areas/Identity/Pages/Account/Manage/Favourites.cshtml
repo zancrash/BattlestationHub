@@ -1,24 +1,23 @@
 ﻿@page
-@model IndexModel
+@model FavouritesModel
 
 @using BattlestationHub.Models
 
 @{
-    ViewData["Title"] = "My Setups";
-    ViewData["ActivePage"] = ManageNavPages.Index;
+    ViewData["Title"] = "Favourite Setups";
+    ViewData["ActivePage"] = ManageNavPages.Favourites;
 }
 
 <h3>@ViewData["Title"]</h3>
-<partial name="_StatusMessage" for="StatusMessage" />
 <div class="row">
     <div class="col-md-6">
 
         @* <h4>Uploads:</h4> *@
         <ul>
-            @foreach (var setup in Model.UserSetups)
+            @foreach (var setup in Model.UserFavourites)
             {
                 <a asp-controller="Setups" asp-action="Details" asp-route-id="@setup.Id">
-                    <li>@setup.SetupName</li>
+                <li>@setup.SetupName</li>
                 </a>
                 
             }

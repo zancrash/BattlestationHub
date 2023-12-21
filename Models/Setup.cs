@@ -17,9 +17,18 @@ namespace BattlestationHub.Models
 
         public string ImgPath { get; set; } = string.Empty;
 
+        public ICollection<Favourite> Favourites { get; set; } = new List<Favourite>();
+
         public Setup()
         {
             
+        }
+
+        // Method to check if the setup is saved for a specific user
+        public bool IsSaved(string userId, int setupId)
+        {
+            Console.WriteLine("Favourites count: " + Favourites.Count);
+            return Favourites.Any(f => f.UserId == userId && f.SetupId == setupId);
         }
     }
 }
