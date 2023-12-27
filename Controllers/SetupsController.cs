@@ -72,6 +72,22 @@ namespace BattlestationHub.Controllers
             return View(setup);
         }
 
+        // GET: Setups/Profile/5
+        public async Task<IActionResult> Profile(string userId)
+        {
+
+            var setups = await _context.Battlestation
+                .Where(m => m.UserId == userId)
+                .ToListAsync();
+
+            if (setups == null)
+            {
+                return NotFound();
+            }
+
+            return View(setups);
+        }
+
         // GET: Setups/Create
         [Authorize]
         public IActionResult Create()
@@ -259,6 +275,8 @@ namespace BattlestationHub.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        
 
         private bool SetupExists(int id)
         {

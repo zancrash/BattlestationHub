@@ -3,8 +3,6 @@
 
 @inject UserManager<ApplicationUser> _userManager
 
-
-
 @{
     ViewData["Title"] = "Details";
 }
@@ -26,7 +24,9 @@
                 var user = await _userManager.FindByIdAsync(Model.UserId);
                 if (user != null)
                 {
-                    <span>@user.DisplayName</span>
+                    <span>
+                        <a asp-action="Profile" asp-route-userId="@user.Id">@user.DisplayName</a>
+                    </span>
                 }
                 else
                 {
