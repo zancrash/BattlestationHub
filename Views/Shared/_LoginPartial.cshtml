@@ -6,7 +6,7 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">My Account</a>
             @* <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@(User.Claims.FirstOrDefault(c => c.Type == "DisplayName")?.Value ?? User.Identity?.Name)</a> *@
     </li>
     <li class="nav-item">
