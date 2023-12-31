@@ -13,7 +13,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => 
+    {
+        options.SignIn.RequireConfirmedAccount = false;
+        options.Password.RequiredLength = 8;                    // Minimum password length
+        options.Password.RequiredUniqueChars = 3;               // Minimum number of unique characters
+        options.Password.RequireNonAlphanumeric = false;       // Require non-alphanumeric characters
+        options.Password.RequireUppercase = false;              // Require uppercase letters
+        options.Password.RequireLowercase = false;              // Require lowercase letters
+        options.Password.RequireDigit = true;
+    })
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddControllersWithViews();

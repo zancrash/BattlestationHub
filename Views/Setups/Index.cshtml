@@ -6,39 +6,21 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Share your Battlestation</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.SetupName)
-            </th>
 
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+<a asp-action="Create" class="btn btn-primary">Share your Battlestation</a>
+
+<div class="setups-holder">
+
 @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.SetupName)
-            </td>
-            <td>
-                @if (!string.IsNullOrEmpty(item.ImgPath))
-                {
-                        <img src="@(item.ImgPath)" alt="Current Image" />
-                }
-                else
-                {
-                    <p>No image available</p>
-                }
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id">View</a>
-            </td>
-        </tr>
+    <div class="card-holder">
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="@(item.ImgPath)" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">@Html.DisplayFor(modelItem => item.SetupName)</h5>
+                    <p class="card-text">@Html.DisplayFor(modelItem => item.SetupDesc)</p>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">View</a>
+            </div>
+        </div>
+    </div>
 }
-    </tbody>
-</table>
+</div>
