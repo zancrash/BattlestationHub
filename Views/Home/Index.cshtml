@@ -4,5 +4,23 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome to Battlestation Hub!</h1>
-    <p>Upload your battlestation to show off, or check out other users' setups.</p>
+
+    <div class="home-btn-holder">
+        <a asp-controller="Setups" asp-action="Create">
+            <button class="home-btn" role="button">
+                <i class="bi bi-upload"></i> <br />
+                Upload Battlestation
+            </button>
+        </a>
+
+        <a asp-controller="Setups" asp-action="Index">
+            <button class="home-btn" role="button">
+                <i class="bi bi-display"></i> <br />
+                Browse Setups
+            </button>
+        </a>
+
+    </div>
+
+
 </div>
