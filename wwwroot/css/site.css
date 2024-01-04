@@ -120,9 +120,6 @@ h1, h2, h3, h4, h5 {
         margin-bottom: 15px;
     }
 
-
-    
-
 @media (max-width: 1200px) {
     .setups-index-holder {
         width: 100%;
@@ -132,3 +129,49 @@ h1, h2, h3, h4, h5 {
         justify-content: center;
     }
 }
+
+/* ---- DETAILS VIEW ----*/
+
+.details-img-holder {
+    display: block;
+    margin: 0 auto;
+    width: 80%;
+}
+
+hr {
+    color: #fff;
+}
+
+.details-holder {
+    display: block;
+    margin: 0 auto;
+    width: 80%;
+    padding: 20px;
+    color: #fff;
+}
+
+.details-actions {
+    display: block;
+    margin: 0 auto;
+    width: 80%;
+    color: #fff;
+    padding: 20px;
+}
+
+.details-actions a {
+    text-decoration: none;
+    color: #fff;
+    margin: 0 5px;
+}
+
+.details-actions .bi {
+    cursor: default;
+    color: pink;
+}
+
+@media (max-width: 1200px) {
+    .details-img-holder img{
+        width: 100%;
+    }
+
+

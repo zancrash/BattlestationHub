@@ -8,64 +8,53 @@
 }
 
 
-<h1>@Html.DisplayFor(model => model.SetupName)</h1>
-
-<div>
-    @* <h4>Setup</h4> *@
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            Uploaded By:
-        </dt>
-        <dd class="col-sm-10">
-            @* @Html.DisplayFor(model => model.UserId) *@
-
-            @{
-                var user = await _userManager.FindByIdAsync(Model.UserId);
-                if (user != null)
-                {
-                    <span>
-                        <a asp-action="Profile" asp-route-userId="@user.Id">@user.DisplayName</a>
-                    </span>
-                }
-                else
-                {
-                    <span>User not found</span>
-                }
-            }
-        </dd>
-        <dt class = "col-sm-2">
-            Description:
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SetupDesc)
-        </dd>
-    </dl>
+<div class="details-img-holder">
+    <img src="https://localhost:44384/images/9289d97c-1d58-4607-9e96-ee4ce80bda1e_233447720_andy-holmes-xA26xebY3dw-unsplash.jpg" class="details-setup-img" />
 </div>
-<div>
 
-    <div>
-        @{
-            if (user?.Id == Model.UserId)
+<div class="details-holder">
+    <h1>@Html.DisplayFor(model => model.SetupName)</h1>
+
+    @{
+        var user = await _userManager.FindByIdAsync(Model.UserId);
+        if (user != null)
+        {
+            <h3><span>Uploaded by: </span> <a asp-action="Profile" asp-route-userId="@user.Id">@user.DisplayName</a></h3>
+        }
+        else
+        {
+            <h3>User not found</h3>
+        }
+    }
+
+    <div class="description-box">
+        <h3>Description: </h3>
+        <p>@Html.DisplayFor(model => model.SetupDesc)</p>
+    </div>
+    
+</div>
+<hr />
+<div class="details-actions">
+    @{
+        if (user?.Id == Model.UserId)
+        {
+            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-info">Edit</a>
+            <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-danger">Delete</a>
+        }
+        else
+        {
+            if ((bool)ViewData["IsSetupSaved"])
             {
-                <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
-                <a asp-action="Delete" asp-route-id="@Model?.Id">Delete</a>
+            <a asp-action="UnsaveSetup" asp-route-id="@Model.Id"><i class="bi bi-heart-fill"></i></a>
             }
             else
             {
-                if ((bool)ViewData["IsSetupSaved"])
-                {
-                    <a asp-action="UnsaveSetup" asp-route-id="@Model.Id">Unsave</a>
-                }
-                else
-                {
-                    <a asp-action="SaveSetup" asp-route-id="@Model.Id">Save</a>
-                }
+            <a asp-action="SaveSetup" asp-route-id="@Model.Id">
+                <i class="bi bi-heart"></i>
+            </a>
             }
         }
+    }
 
-        <a asp-action="Index">Back to List</a>
-
-     
-    </div>
+    <a asp-action="Index" class="btn btn-primary">Back to List</a>
 </div>
