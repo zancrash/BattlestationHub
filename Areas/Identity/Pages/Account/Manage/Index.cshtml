@@ -4,23 +4,26 @@
 @using BattlestationHub.Models
 
 @{
-    ViewData["Title"] = "My Setups";
+    ViewData["Title"] = "Profile";
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
-<h3>@ViewData["Title"]</h3>
+<h3>Uploaded Battlestations</h3>
 <partial name="_StatusMessage" for="StatusMessage" />
-<div class="row">
+
+<div class="row profile-setups-row">
     <div class="col-md-6">
 
         @* <h4>Uploads:</h4> *@
         <ul>
             @foreach (var setup in Model.UserSetups)
             {
-                <a asp-controller="Setups" asp-action="Details" asp-route-id="@setup.Id">
-                    <li>@setup.SetupName</li>
-                </a>
-                
+                <div class="card-holder">
+                    <img src="@("https://localhost:44384/" + setup.ImgPath)" alt="Card image cap">
+                    <h3 class="card-title">@Html.DisplayFor(modelItem => setup.SetupName)</h3>
+                    <a class="btn btn-primary" asp-controller="Setups" asp-action="Details" asp-route-id="@setup.Id">View</a>
+                </div>
+
             }
         </ul>
     </div>

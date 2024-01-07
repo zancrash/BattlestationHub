@@ -9,14 +9,39 @@
 
 
 <div class="details-img-holder">
-    <img src="https://localhost:44384/images/9289d97c-1d58-4607-9e96-ee4ce80bda1e_233447720_andy-holmes-xA26xebY3dw-unsplash.jpg" class="details-setup-img" />
+    <img src="@("https://localhost:44384/" + Model.ImgPath)" alt="Card image cap">
+    <div class="details-actions">
+        @{
+            var user = await _userManager.FindByIdAsync(Model.UserId);
+
+            if (user?.Id == Model.UserId)
+            {
+                <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-info">Edit</a>
+                <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-danger">Delete</a>
+            }
+            else
+            {
+                if ((bool)ViewData["IsSetupSaved"])
+                {
+                    <a asp-action="UnsaveSetup" asp-route-id="@Model.Id"><i class="bi bi-heart-fill"></i></a>
+                }
+                else
+                {
+                    <a asp-action="SaveSetup" asp-route-id="@Model.Id">
+                        <i class="bi bi-heart"></i>
+                    </a>
+                }
+            }
+        }
+
+        <a asp-action="Index" class="btn btn-primary">Back to List</a>
+    </div>
+    <hr />
 </div>
 
 <div class="details-holder">
     <h1>@Html.DisplayFor(model => model.SetupName)</h1>
-
     @{
-        var user = await _userManager.FindByIdAsync(Model.UserId);
         if (user != null)
         {
             <h3><span>Uploaded by: </span> <a asp-action="Profile" asp-route-userId="@user.Id">@user.DisplayName</a></h3>
@@ -33,28 +58,4 @@
     </div>
     
 </div>
-<hr />
-<div class="details-actions">
-    @{
-        if (user?.Id == Model.UserId)
-        {
-            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-info">Edit</a>
-            <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-danger">Delete</a>
-        }
-        else
-        {
-            if ((bool)ViewData["IsSetupSaved"])
-            {
-            <a asp-action="UnsaveSetup" asp-route-id="@Model.Id"><i class="bi bi-heart-fill"></i></a>
-            }
-            else
-            {
-            <a asp-action="SaveSetup" asp-route-id="@Model.Id">
-                <i class="bi bi-heart"></i>
-            </a>
-            }
-        }
-    }
 
-    <a asp-action="Index" class="btn btn-primary">Back to List</a>
-</div>

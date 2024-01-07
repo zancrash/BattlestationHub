@@ -2,6 +2,9 @@
 @model FavouritesModel
 
 @using BattlestationHub.Models
+@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<ApplicationUser> _userManager
 
 @{
     ViewData["Title"] = "Favourite Setups";
@@ -9,16 +12,31 @@
 }
 
 <h3>@ViewData["Title"]</h3>
-<div class="row">
+<div class="row profile-setups-row">
     <div class="col-md-6">
 
-        @* <h4>Uploads:</h4> *@
         <ul>
             @foreach (var setup in Model.UserFavourites)
             {
-                <a asp-controller="Setups" asp-action="Details" asp-route-id="@setup.Id">
-                <li>@setup.SetupName</li>
-                </a>
+
+                <div class="card-holder">
+                    <img src="@("https://localhost:44384/" + setup.ImgPath)" alt="Card image cap">
+                    <h3 class="card-title">@Html.DisplayFor(modelItem => setup.SetupName)</h3>
+
+                    @{
+                        var user = await _userManager.FindByIdAsync(setup.UserId);
+                        if (user != null)
+                        {
+                            <h5><span>Uploader: </span> <a asp-action="Profile" asp-route-userId="@user.Id">@user.DisplayName</a> </h5>
+                        }
+                        else
+                        {
+                            <h5>User not found</h5>
+                        }
+                    }
+
+                    <a class="btn btn-primary" asp-controller="Setups" asp-action="Details" asp-route-id="@setup.Id">View</a>
+                </div>
                 
             }
         </ul>

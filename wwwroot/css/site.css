@@ -20,14 +20,49 @@ html {
 body {
   margin-bottom: 60px;
   background: #242424;
+  color: #fff;
 }
 
 h1, h2, h3, h4, h5 {
     color: #fff;
 }
 
-/* ---- HOME VIEW ----*/
+/* ---- GENERAL ----*/
 
+.page-title-holder {
+    width: 80%;
+    display: block;
+    margin: 0 auto;
+}
+
+.page-content-holder {
+    width: 80%;
+    display: block;
+    margin: 0 auto;
+}
+
+/* ---- LOGIN VIEW ----*/
+
+.login-check {
+    color: #fff !important;
+}
+
+.login-btn-holder {
+    margin-top: 20px;
+}
+
+/* ---- PROFILE ----*/
+.page-content-holder .form-label,
+.page-content-holder label {
+    color: #000;
+}
+
+.profile-setups-row ul{
+    padding: 0;
+}
+
+
+/* ---- HOME VIEW ----*/
 .text-center {
     position: absolute;
     top: 0;
@@ -146,16 +181,14 @@ hr {
     display: block;
     margin: 0 auto;
     width: 80%;
-    padding: 20px;
     color: #fff;
 }
 
 .details-actions {
     display: block;
     margin: 0 auto;
-    width: 80%;
     color: #fff;
-    padding: 20px;
+    margin-top: 15px;
 }
 
 .details-actions a {
@@ -169,9 +202,47 @@ hr {
     color: pink;
 }
 
+.details-img-holder img {
+    width: 100%;
+    max-width: 720px;
+}
+
+/* ---- CREATE VIEW ----*/
+
+.create-holder, .create-form-holder {
+    width: 80%;
+    display: block;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin: 15px 0;
+}
+
+
+/* ---- DELETE VIEW ----*/
+
+#delete-holder img {
+    margin: 15px 0 15px 0;
+}
+
+#delete-holder h4 {
+    margin-bottom: 20px;
+}
+
+#delete-holder img {
+    width: 100%;
+    max-width: 720px;
+}
+
 @media (max-width: 1200px) {
-    .details-img-holder img{
+    #delete-holder img {
         width: 100%;
     }
+}
 
+/* ---- PROFILE ----*/
 
+.profile-card-holder {
+     margin: 20px 0 !important;
+}

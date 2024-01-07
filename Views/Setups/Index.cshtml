@@ -6,12 +6,11 @@
 
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Browse Setups";
 }
 
 <div class="setups-index-holder">
     <h1>Setups</h1>
-
 
     <a asp-action="Create" class="btn btn-primary" id="setups-index-btn">Share your Battlestation</a>
 
@@ -34,7 +33,7 @@
                     }
                 }
 
-                <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">View</a>
             </div>
         }
     </div>

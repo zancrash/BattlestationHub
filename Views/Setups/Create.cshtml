@@ -1,42 +1,43 @@
 ﻿@model BattlestationHub.Models.Setup
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Upload";
 }
+<div class="create-holder">
+    <h1>Upload Battlestation</h1>
+    <hr />
+</div>
+<div class="create-form-holder">
+    <div class="row">
+        <div class="col-md">
+            <form asp-action="Create" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="SetupName" class="control-label">Battlestation Name</label>
+                    <input asp-for="SetupName" class="form-control" />
+                    <span asp-validation-for="SetupName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SetupDesc" class="control-label">Description</label>
+                    <textarea asp-for="SetupDesc" class="form-control"> </textarea>
+                    <span asp-validation-for="SetupDesc" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SetupImgFile" class="control-label">Battlestation Image</label>
+                    <input asp-for="SetupImgFile" accept="image/*" />
+                    <span asp-validation-for="SetupImgFile" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Upload" class="btn btn-success" />
+                    <a asp-action="Index" class="btn btn-secondary">Return</a>
+                </div>
+            </form>
+        </div>
 
-<h1>Create</h1>
-
-<h4>Setup</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="SetupName" class="control-label"></label>
-                <input asp-for="SetupName" class="form-control" />
-                <span asp-validation-for="SetupName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SetupDesc" class="control-label"></label>
-                <input asp-for="SetupDesc" class="form-control" />
-                <span asp-validation-for="SetupDesc" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SetupImgFile" class="control-label"></label>
-                <input asp-for="SetupImgFile" accept="image/*" />
-                <span asp-validation-for="SetupImgFile" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Upload" class="btn btn-primary" />
-            </div>
-        </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

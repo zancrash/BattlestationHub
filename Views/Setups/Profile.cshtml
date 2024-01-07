@@ -7,24 +7,28 @@
     ViewData["Title"] = "Profile";
 }
 
-<!-- Display user details and other information -->
 @{
     if (Model.Count > 0)
     {
         var user = await _userManager.FindByIdAsync(Model[0].UserId);
         if (user != null)
         {
-            <h1>Setups Uploaded by @user.DisplayName</h1>
+            <div class="page-title-holder">
+                <h1>Setups: @user.DisplayName</h1>
+            </div>
+
         }
     }
 }
 
+<div class="page-content-holder">
+    @foreach (var userSetup in Model)
+    {
 
-@foreach (var userSetup in Model)
-{
-    <div>
-        <a asp-action="Details" asp-route-id="@userSetup.Id">View</a>
-        <h4>@userSetup.SetupName</h4>
-        <p>@userSetup.SetupDesc</p>
-    </div>
-}
+        <div class="card-holder profile-card-holder">
+            <img src="@("https://localhost:44384/" + @userSetup.ImgPath)" alt="Card image cap">
+            <h3 class="card-title">@userSetup.SetupName</h3>
+            <a class="btn btn-primary" asp-controller="Setups" asp-action="Details" asp-route-id="@userSetup.Id">View</a>
+        </div>
+    }
+</div>
