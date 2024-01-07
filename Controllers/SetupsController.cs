@@ -34,7 +34,7 @@ namespace BattlestationHub.Controllers
         // GET: Setups
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Battlestation.ToListAsync());
+            return View(await _context.Battlestation.OrderByDescending(s => s.Id).ToListAsync());
         }
 
         // GET: Jokes/ShowSearchForm
