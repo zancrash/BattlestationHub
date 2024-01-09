@@ -13,6 +13,9 @@ using Microsoft.AspNetCore.Hosting;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+
 namespace BattlestationHub.Controllers
 {
     public class SetupsController : Controller
@@ -110,31 +113,28 @@ namespace BattlestationHub.Controllers
 
                 setup.UserId = userId;
 
-                // Generate unique filename
-                string uniqueFileName = Guid.NewGuid().ToString() + "_" + DateTime.Now.ToString("yymmssfff") + "_" + setup.SetupImgFile.FileName;
-
-                // Get wwwroot path
-                string webRootPath = _webHostEnvironment.WebRootPath;
-
-
-                // Ensure 'images' directory exists
-                string imagesDirectory = Path.Combine(webRootPath, "images");
-                if (!Directory.Exists(imagesDirectory))
+                if (setup.SetupImgFile != null)
                 {
-                    Directory.CreateDirectory(imagesDirectory);
+                    // Set up Azure Storage connection string and container name
+                    string connectionString = "DefaultEndpointsProtocol=https;AccountName=battlestationhubsetups;AccountKey=8fX3/4wOSbfEEnCSBY4WcVnxpFdkrytDXCfBN9T3xUlsT9/i+rhLjivjj/Ccobc6DR0y6STqtqa4+AStPyMgSA==;EndpointSuffix=core.windows.net";
+                    string containerName = "images";
+
+                    var blobServiceClient = new BlobServiceClient(connectionString);
+                    var blobContainerClient = blobServiceClient.GetBlobContainerClient(containerName);
+
+                    // Generate unique filename
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + DateTime.Now.ToString("yymmssfff") + "_" + setup.SetupImgFile.FileName;
+
+                    // Upload the image to Azure Blob Storage
+                    var blobClient = blobContainerClient.GetBlobClient(uniqueFileName);
+                    using (var stream = setup.SetupImgFile.OpenReadStream())
+                    {
+                        await blobClient.UploadAsync(stream, true);
+                    }
+
+                    // Set the ImgPath to the Azure Blob Storage URI
+                    setup.ImgPath = blobClient.Uri.ToString();
                 }
-
-                // Create filepath
-                string filePath = Path.Combine(imagesDirectory, uniqueFileName);
-
-                // Save image to the file system
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await setup.SetupImgFile.CopyToAsync(fileStream);
-                }
-
-                //setup.ImgPath = filePath;
-                setup.ImgPath = Path.Combine("images", uniqueFileName);
 
                 // Insert Record
                 _context.Add(setup);

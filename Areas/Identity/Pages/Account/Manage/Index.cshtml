@@ -14,12 +14,11 @@
 <div class="row profile-setups-row">
     <div class="col-md-6">
 
-        @* <h4>Uploads:</h4> *@
         <ul>
             @foreach (var setup in Model.UserSetups)
             {
                 <div class="card-holder">
-                    <img src="@("https://localhost:44384/" + setup.ImgPath)" alt="Card image cap">
+                    <img src="@setup.ImgPath" alt="Card image cap">
                     <h3 class="card-title">@Html.DisplayFor(modelItem => setup.SetupName)</h3>
                     <a class="btn btn-primary" asp-controller="Setups" asp-action="Details" asp-route-id="@setup.Id">View</a>
                 </div>

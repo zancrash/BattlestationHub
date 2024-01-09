@@ -9,7 +9,7 @@
 
 
 <div class="details-img-holder">
-    <img src="@("https://localhost:44384/" + Model.ImgPath)" alt="Card image cap">
+    <img src="@(Model.ImgPath)" alt="Card image cap">
     <div class="details-actions">
         @{
             var user = await _userManager.FindByIdAsync(Model.UserId);

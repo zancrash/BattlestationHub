@@ -243,6 +243,10 @@ hr {
 
 /* ---- PROFILE ----*/
 
+#profile-title-holder {
+    text-align: center;
+}
+
 .profile-card-holder {
-     margin: 20px 0 !important;
+     margin: 20px auto !important;
 }

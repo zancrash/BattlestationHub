@@ -19,7 +19,7 @@
         @foreach (var item in Model)
         {
             <div class="card-holder">
-                <img src="@(item.ImgPath)" alt="Card image cap">
+                <img src="@item.ImgPath" alt="Card image cap">
                 <h3 class="card-title">@Html.DisplayFor(modelItem => item.SetupName)</h3>
                 @{
                     var user = await _userManager.FindByIdAsync(item.UserId);

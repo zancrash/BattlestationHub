@@ -13,7 +13,7 @@
         var user = await _userManager.FindByIdAsync(Model[0].UserId);
         if (user != null)
         {
-            <div class="page-title-holder">
+            <div class="page-title-holder" id="profile-title-holder">
                 <h1>Setups: @user.DisplayName</h1>
             </div>
 
@@ -26,7 +26,7 @@
     {
 
         <div class="card-holder profile-card-holder">
-            <img src="@("https://localhost:44384/" + @userSetup.ImgPath)" alt="Card image cap">
+            <img src="@userSetup.ImgPath" alt="Card image cap">
             <h3 class="card-title">@userSetup.SetupName</h3>
             <a class="btn btn-primary" asp-controller="Setups" asp-action="Details" asp-route-id="@userSetup.Id">View</a>
         </div>
