@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using X.PagedList;
 
 namespace BattlestationHub.Controllers
 {
@@ -35,9 +36,17 @@ namespace BattlestationHub.Controllers
         }
 
         // GET: Setups
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            return View(await _context.Battlestation.OrderByDescending(s => s.Id).ToListAsync());
+            int pageSize = 3;
+            int pageNumber = page ?? 1;
+
+            var setups = await _context.Battlestation
+                                        .OrderByDescending(s => s.Id)
+                                        .ToPagedListAsync(pageNumber, pageSize);
+
+            return View(setups);
+
         }
 
         // GET: Jokes/ShowSearchForm

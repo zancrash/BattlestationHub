@@ -1,9 +1,10 @@
-﻿@model IEnumerable<BattlestationHub.Models.Setup>
+﻿@model X.PagedList.IPagedList<BattlestationHub.Models.Setup>
 
 @using Microsoft.AspNetCore.Identity
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common;
 
 @inject UserManager<ApplicationUser> _userManager
-
 
 @{
     ViewData["Title"] = "Browse Setups";
@@ -38,5 +39,8 @@
         }
     </div>
 
-</div>
+    <div class="pagination">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })
+    </div>
 
+</div>
