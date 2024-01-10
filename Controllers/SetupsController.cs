@@ -38,7 +38,7 @@ namespace BattlestationHub.Controllers
         // GET: Setups
         public async Task<IActionResult> Index(int? page)
         {
-            int pageSize = 3;
+            int pageSize = 10;
             int pageNumber = page ?? 1;
 
             var setups = await _context.Battlestation

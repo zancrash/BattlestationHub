@@ -41,8 +41,24 @@ h1, h2, h3, h4, h5 {
     margin: 0 auto;
 }
 
-/* ---- LOGIN VIEW ----*/
+/* ---- PAGINATION ----*/
 
+.pagination-container {
+    display: block;
+    margin: 0 auto;
+}
+
+    .pagination-container ul li {
+        background-color: #191919;
+        padding: 5px 5px;
+        margin: 0 10px;
+        color: #fff;
+    }
+
+    .pagination-container ul li a {
+        text-decoration: none;
+    }
+/* ---- LOGIN VIEW ----*/
 .login-check {
     color: #fff !important;
 }
