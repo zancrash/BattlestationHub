@@ -13,7 +13,7 @@
 <div class="page-content-holder" id="delete-holder">
     <h3>Are you sure you want to delete this setup?</h3>
 
-    <img src="@("https://localhost:44384/" + Model.ImgPath)" alt="Card image cap">
+    <img src="@(Model.ImgPath)" alt="Card image cap">
     <h4>@Html.DisplayFor(model => model.SetupName)</h4>
 
     <form asp-action="Delete">

@@ -279,6 +279,23 @@ namespace BattlestationHub.Controllers
             if (setup != null)
             {
                 _context.Battlestation.Remove(setup);
+
+                // Remove setup image from blob storage
+                if (!string.IsNullOrEmpty(setup.ImgPath))
+                {
+                    // Azure Storage connection string and container name
+                    string connectionString = "DefaultEndpointsProtocol=https;AccountName=battlestationhubsetups;AccountKey=8fX3/4wOSbfEEnCSBY4WcVnxpFdkrytDXCfBN9T3xUlsT9/i+rhLjivjj/Ccobc6DR0y6STqtqa4+AStPyMgSA==;EndpointSuffix=core.windows.net";
+                    string containerName = "images";
+
+                    var blobServiceClient = new BlobServiceClient(connectionString);
+                    var blobContainerClient = blobServiceClient.GetBlobContainerClient(containerName);
+
+                    var blobName = Path.GetFileName(setup.ImgPath);
+                    var blobClient = blobContainerClient.GetBlobClient(blobName);
+
+                    // Delete the blob
+                    await blobClient.DeleteIfExistsAsync();
+                }
             }
 
             await _context.SaveChangesAsync();
