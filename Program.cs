@@ -13,6 +13,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+
+// Configuration for Blob Storage
+builder.Services.Configure<BlobStorageSettings>(builder.Configuration.GetSection("ConnectionStrings"));
+builder.Services.Configure<string>(builder.Configuration.GetSection("BlobContainerName"));
+
+
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => 
     {
         options.SignIn.RequireConfirmedAccount = false;

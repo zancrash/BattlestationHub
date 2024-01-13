@@ -16,23 +16,26 @@ using Microsoft.AspNetCore.Identity;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using X.PagedList;
+using Microsoft.Extensions.Options;
 
 namespace BattlestationHub.Controllers
 {
     public class SetupsController : Controller
     {
 
-
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly string _connectionString;
 
 
-        public SetupsController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment, UserManager<ApplicationUser> userManager)
+        public SetupsController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment, UserManager<ApplicationUser> userManager, IOptions<BlobStorageSettings> blobStorageSettings)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
             _userManager = userManager;
+
+            _connectionString = blobStorageSettings.Value.BlobStorage;
         }
 
         // GET: Setups
@@ -124,11 +127,10 @@ namespace BattlestationHub.Controllers
 
                 if (setup.SetupImgFile != null)
                 {
-                    // Set up Azure Storage connection string and container name
-                    string connectionString = "DefaultEndpointsProtocol=https;AccountName=battlestationhubsetups;AccountKey=8fX3/4wOSbfEEnCSBY4WcVnxpFdkrytDXCfBN9T3xUlsT9/i+rhLjivjj/Ccobc6DR0y6STqtqa4+AStPyMgSA==;EndpointSuffix=core.windows.net";
+                    // Azure Storage container name
                     string containerName = "images";
 
-                    var blobServiceClient = new BlobServiceClient(connectionString);
+                    var blobServiceClient = new BlobServiceClient(_connectionString);
                     var blobContainerClient = blobServiceClient.GetBlobContainerClient(containerName);
 
                     // Generate unique filename
@@ -275,6 +277,7 @@ namespace BattlestationHub.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+
             var setup = await _context.Battlestation.FindAsync(id);
             if (setup != null)
             {
@@ -283,11 +286,9 @@ namespace BattlestationHub.Controllers
                 // Remove setup image from blob storage
                 if (!string.IsNullOrEmpty(setup.ImgPath))
                 {
-                    // Azure Storage connection string and container name
-                    string connectionString = "DefaultEndpointsProtocol=https;AccountName=battlestationhubsetups;AccountKey=8fX3/4wOSbfEEnCSBY4WcVnxpFdkrytDXCfBN9T3xUlsT9/i+rhLjivjj/Ccobc6DR0y6STqtqa4+AStPyMgSA==;EndpointSuffix=core.windows.net";
                     string containerName = "images";
 
-                    var blobServiceClient = new BlobServiceClient(connectionString);
+                    var blobServiceClient = new BlobServiceClient(_connectionString);
                     var blobContainerClient = blobServiceClient.GetBlobContainerClient(containerName);
 
                     var blobName = Path.GetFileName(setup.ImgPath);
