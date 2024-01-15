@@ -5,6 +5,12 @@
 
 @{
     ViewData["Title"] = "Details";
+
+    // Retrieve the current logged-in user
+    var user = await _userManager.GetUserAsync(User);
+
+    // Retrieve user that uploaded the setup
+    var setupUser = await _userManager.FindByIdAsync(Model.UserId);
 }
 
 
@@ -12,7 +18,10 @@
     <img src="@(Model.ImgPath)" alt="Card image cap">
     <div class="details-actions">
         @{
-            var user = await _userManager.FindByIdAsync(Model.UserId);
+
+            
+
+            <p></p>
 
             if (user?.Id == Model.UserId)
             {
@@ -42,14 +51,7 @@
 <div class="details-holder">
     <h1>@Html.DisplayFor(model => model.SetupName)</h1>
     @{
-        if (user != null)
-        {
-            <h3><span>Uploaded by: </span> <a asp-action="Profile" asp-route-userId="@user.Id">@user.DisplayName</a></h3>
-        }
-        else
-        {
-            <h3>User not found</h3>
-        }
+        <h3><span>Uploaded by: </span> <a asp-action="Profile" asp-route-userId="@setupUser.Id">@setupUser.DisplayName</a></h3>
     }
 
     <div class="description-box">

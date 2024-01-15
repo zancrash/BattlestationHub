@@ -155,6 +155,7 @@ namespace BattlestationHub.Controllers
              return View(setup);
         }
 
+        [Authorize]
         public async Task<IActionResult> SaveSetup(int id)
         {
             var setup = await _context.Battlestation
