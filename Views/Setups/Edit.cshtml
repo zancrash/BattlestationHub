@@ -8,13 +8,14 @@
     <h1>Edit</h1>
     <hr />
 </div>
-<div class="page-content-holder">
+<div class="page-content-holder" id="edit-form">
 
     <div class="row">
         <div class="col-md">
-            <form asp-action="Edit">
+            <form asp-action="Edit" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="ImgPath" />
                 <div class="form-group">
                     <label asp-for="SetupName" class="control-label">Battlestation Name</label>
                     <input asp-for="SetupName" class="form-control" />
@@ -25,10 +26,22 @@
                     <textarea asp-for="SetupDesc" class="form-control" ></textarea>
                     <span asp-validation-for="SetupDesc" class="text-danger"></span>
                 </div>
+                <div class="form-group image-form-group">
+                    <div class="form-group">
+                        <img src="@Model.ImgPath" id="displayedImage" />
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" id="toggleButton" onclick="toggleImageForm()">Replace Image</button>
+                    </div>
+                    <div class="form-group" id="imgFormGroup" style="display:none;">
+                        <label asp-for="SetupImgFile" class="control-label">Battlestation Image</label>
+                        <input asp-for="SetupImgFile" accept="image/*" class="form-control" />
+                        <span asp-validation-for="SetupImgFile" class="text-danger"></span>
+                    </div>
+                </div>
                 <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-success" />
                     <a asp-action="Index" class="btn btn-secondary">Return</a>
-
                 </div>
             </form>
         </div>
@@ -37,4 +50,36 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        function toggleImageForm() {
+            var imgFormGroup = document.getElementById('imgFormGroup');
+            var displayedImage = document.getElementById('displayedImage');
+            var setupImgFile = document.getElementById('SetupImgFile');
+            var toggleButton = document.getElementById('toggleButton');
+
+            if (imgFormGroup.style.display === 'none' || imgFormGroup.style.display === '') {
+                imgFormGroup.style.display = 'block';
+                displayedImage.style.display = 'none';
+                setupImgFile.style.display = 'block';
+                toggleButton.style.display = 'none';
+            } else {
+                imgFormGroup.style.display = 'none';
+                displayedImage.style.display = 'block';
+                setupImgFile.style.display = 'none';
+            }
+        }
+
+        document.getElementById('SetupImgFile').addEventListener('change', function () {
+            var input = this;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('displayedImage').src = e.target.result;
+                    document.getElementById('displayedImage').style.display = 'block';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+    </script>
 }

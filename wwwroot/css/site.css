@@ -235,6 +235,17 @@ hr {
     margin: 15px 0;
 }
 
+/* ---- EDIT VIEW ----*/
+
+#edit-form .control-label {
+    color: #fff;
+}
+
+.image-form-group {
+    background-color: #191919;
+    margin: 15px 0;
+    padding: 15px;
+}
 
 /* ---- DELETE VIEW ----*/
 

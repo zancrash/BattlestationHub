@@ -225,35 +225,93 @@ namespace BattlestationHub.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,SetupName,SetupDesc")] Setup setup)
+        [Authorize]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,SetupName,SetupDesc,SetupImgFile,ImgPath")] Setup setup)
         {
             if (id != setup.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
+                // Retrieve the current user's ID
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                // Check if the user has permission to edit this setup
+                var existingSetup = await _context.Battlestation.FindAsync(id);
+                if (existingSetup == null || existingSetup.UserId != userId)
                 {
-                    _context.Update(setup);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+
+                existingSetup.SetupName = setup.SetupName;
+                existingSetup.SetupDesc = setup.SetupDesc;
+
+                // Update the image if a new one is provided
+                if (setup.SetupImgFile != null)
                 {
-                    if (!SetupExists(setup.Id))
+                    // Azure Storage container name
+                    string containerName = "images";
+
+                    var blobServiceClient = new BlobServiceClient(_connectionString);
+                    var blobContainerClient = blobServiceClient.GetBlobContainerClient(containerName);
+
+                    // Generate unique filename
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + DateTime.Now.ToString("yymmssfff") + "_" + setup.SetupImgFile.FileName;
+
+                    var blobClient = blobContainerClient.GetBlobClient(uniqueFileName);
+
+                    using (var stream = setup.SetupImgFile.OpenReadStream())
                     {
-                        return NotFound();
+                        await blobClient.UploadAsync(stream, true);
                     }
-                    else
-                    {
-                        throw;
-                    }
+
+                    // Delete the old image from Azure
+                    await DeleteOldImageAsync(existingSetup.ImgPath);
+
+                    // Update ImgPath with the new image path
+                    existingSetup.ImgPath = blobClient.Uri.ToString();
+                } else
+                {
+                    // Update ImgPath with the existing image path
+                    setup.ImgPath = existingSetup.ImgPath;
                 }
-                return RedirectToAction(nameof(Index));
+
+                // Update the record in the database
+                _context.Update(existingSetup);
+                await _context.SaveChangesAsync();
             }
-            return View(setup);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!SetupExists(setup.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+
         }
+
+        // Function to delete the old image from Azure Blob Storage
+        private async Task DeleteOldImageAsync(string oldImagePath)
+        {
+            string containerName = "images";
+
+            var blobServiceClient = new BlobServiceClient(_connectionString);
+            var blobContainerClient = blobServiceClient.GetBlobContainerClient(containerName);
+
+            var blobName = Path.GetFileName(oldImagePath);
+            var blobClient = blobContainerClient.GetBlobClient(blobName);
+
+            // Delete the blob
+            await blobClient.DeleteIfExistsAsync();
+        }
+
 
         // GET: Setups/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -303,8 +361,6 @@ namespace BattlestationHub.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
-        
 
         private bool SetupExists(int id)
         {
