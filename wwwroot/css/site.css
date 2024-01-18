@@ -86,7 +86,7 @@ h1, h2, h3, h4, h5 {
     z-index: -2;
     width: 100%;
     height: 100%;
-    background: url('https://localhost:44384/images/home-bg.jpg') rgba(0, 0, 0, 0.7);
+    background: url('https://battlestationhubsetups.blob.core.windows.net/images/home-bg.jpg') rgba(0, 0, 0, 0.7);
     background-size: cover;
     background-blend-mode: multiply;
     background-position-y: center;
@@ -105,6 +105,11 @@ h1, h2, h3, h4, h5 {
     .text-center h3{
         margin: 15px 0;
     }
+
+
+.home-btn-holder a {
+    text-decoration: none;
+}
 
 .home-btn {
     width: 250px;
