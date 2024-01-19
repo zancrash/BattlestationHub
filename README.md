@@ -14,13 +14,5 @@ Battionstation Hub is a web application built using C# and ASP.NET that allows u
 1. Clone the repository.
 2. Run `dotnet restore` to install dependencies.
 3. Make sure you have the .NET Core SDK installed on your machine. The application is developed with .NET Core 4.8.
-4. Navigate to the project directory and run the following command to restore the project dependencies:
-  ```
-  dotnet restore
-  ```
-5. Apply database migrations
-6. Run the application:
-  ```
-  dotnet run
-  ```
-
+4. Apply database migrations
+5. Run the application: `dotnet run `
