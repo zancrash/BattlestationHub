@@ -6,10 +6,8 @@ Battionstation Hub is a web application built using C# and ASP.NET that allows u
 
 ## Table of Contents
 
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Database Setup](#database-setup)
-- [Usage](#usage)
+- [Local Installation](#installation)
+
 
 ## Local Installation
 
