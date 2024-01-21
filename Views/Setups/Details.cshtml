@@ -19,26 +19,25 @@
     <div class="details-actions">
         @{
 
-            
-
-            <p></p>
-
-            if (user?.Id == Model.UserId)
+            if (user != null)
             {
-                <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-info">Edit</a>
-                <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-danger">Delete</a>
-            }
-            else
-            {
-                if ((bool)ViewData["IsSetupSaved"])
+                if (user?.Id == Model.UserId)
                 {
-                    <a asp-action="UnsaveSetup" asp-route-id="@Model.Id"><i class="bi bi-heart-fill"></i></a>
+                    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-info">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-danger">Delete</a>
                 }
                 else
                 {
-                    <a asp-action="SaveSetup" asp-route-id="@Model.Id">
-                        <i class="bi bi-heart"></i>
-                    </a>
+                    if ((bool)ViewData["IsSetupSaved"])
+                    {
+                        <a asp-action="UnsaveSetup" asp-route-id="@Model.Id"><i class="bi bi-heart-fill"></i></a>
+                    }
+                    else
+                    {
+                        <a asp-action="SaveSetup" asp-route-id="@Model.Id">
+                            <i class="bi bi-heart"></i>
+                        </a>
+                    }
                 }
             }
         }

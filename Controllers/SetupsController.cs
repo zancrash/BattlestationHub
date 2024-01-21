@@ -82,7 +82,11 @@ namespace BattlestationHub.Controllers
 
             var user = await _userManager.GetUserAsync(User);
 
-            ViewData["IsSetupSaved"] = setup.Favourites.Any(f => f.IsSaved(user.Id, setup.Id));
+            if (user != null)
+            {
+                ViewData["IsSetupSaved"] = setup.Favourites.Any(f => f.IsSaved(user.Id, setup.Id));
+            }
+
 
             return View(setup);
         }
